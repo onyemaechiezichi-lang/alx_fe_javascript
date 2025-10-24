@@ -5,7 +5,7 @@ const quotes = [
   { text: "Do not watch the clock; do what it does. Keep going.", category: "Motivation" },
 ];
 
-// Get DOM elements
+// Get references to DOM elements
 const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteBtn = document.getElementById("newQuote");
 
@@ -35,12 +35,12 @@ function addQuote() {
   textInput.value = "";
   categoryInput.value = "";
 
-  // Display a new random quote
+  // Update the displayed quote
   displayRandomQuote();
 }
 
 // ✅ Event listener for “Show New Quote” button
 newQuoteBtn.addEventListener("click", displayRandomQuote);
 
-// ✅ Display a random quote when the page loads
+// ✅ Display one random quote when the page loads
 displayRandomQuote();
