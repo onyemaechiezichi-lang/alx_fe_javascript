@@ -1,4 +1,4 @@
-// Quotes array with text and category
+// Array of quotes with text and category
 const quotes = [
   { text: "The best way to predict the future is to invent it.", category: "Inspiration" },
   { text: "Life is what happens when you're busy making other plans.", category: "Life" },
@@ -9,14 +9,14 @@ const quotes = [
 const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteBtn = document.getElementById("newQuote");
 
-// Function to display a random quote
+// ✅ Function name must be displayRandomQuote (NOT showRandomQuote)
 function displayRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const randomQuote = quotes[randomIndex];
   quoteDisplay.innerHTML = `<p>"${randomQuote.text}"</p><small>— ${randomQuote.category}</small>`;
 }
 
-// Function to add a new quote
+// ✅ Function to add a new quote dynamically
 function addQuote() {
   const textInput = document.getElementById("newQuoteText");
   const categoryInput = document.getElementById("newQuoteCategory");
@@ -24,23 +24,4 @@ function addQuote() {
   const category = categoryInput.value.trim();
 
   if (text === "" || category === "") {
-    alert("Please fill in both fields!");
-    return;
-  }
-
-  // Add new quote to the array
-  quotes.push({ text: text, category: category });
-
-  // Clear input fields
-  textInput.value = "";
-  categoryInput.value = "";
-
-  // Show a random quote (possibly the new one)
-  displayRandomQuote();
-}
-
-// Event listener for “Show New Quote” button
-newQuoteBtn.addEventListener("click", displayRandomQuote);
-
-// Display one quote when the page loads
-displayRandomQuote();
+    alert("Pleas
