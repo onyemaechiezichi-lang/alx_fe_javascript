@@ -9,7 +9,7 @@ const quotes = [
 const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteBtn = document.getElementById("newQuote");
 
-// ✅ Function name must be displayRandomQuote (NOT showRandomQuote)
+// ✅ Function to display a random quote
 function displayRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const randomQuote = quotes[randomIndex];
@@ -24,4 +24,23 @@ function addQuote() {
   const category = categoryInput.value.trim();
 
   if (text === "" || category === "") {
-    alert("Pleas
+    alert("Please fill in both fields!");
+    return;
+  }
+
+  // Add the new quote to the array
+  quotes.push({ text: text, category: category });
+
+  // Clear input fields
+  textInput.value = "";
+  categoryInput.value = "";
+
+  // Display a new random quote
+  displayRandomQuote();
+}
+
+// ✅ Event listener for “Show New Quote” button
+newQuoteBtn.addEventListener("click", displayRandomQuote);
+
+// ✅ Display a random quote when the page loads
+displayRandomQuote();
