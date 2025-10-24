@@ -1,11 +1,11 @@
-// Array of quotes with text and category
+// Array to store quotes
 const quotes = [
   { text: "The best way to predict the future is to invent it.", category: "Inspiration" },
   { text: "Life is what happens when you're busy making other plans.", category: "Life" },
   { text: "Do not watch the clock; do what it does. Keep going.", category: "Motivation" },
 ];
 
-// Get references to DOM elements
+// DOM elements
 const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteBtn = document.getElementById("newQuote");
 
@@ -16,31 +16,29 @@ function displayRandomQuote() {
   quoteDisplay.innerHTML = `<p>"${randomQuote.text}"</p><small>— ${randomQuote.category}</small>`;
 }
 
-// ✅ Function to add a new quote dynamically
+// ✅ Function to add new quote dynamically
 function addQuote() {
-  const textInput = document.getElementById("newQuoteText");
-  const categoryInput = document.getElementById("newQuoteCategory");
-  const text = textInput.value.trim();
-  const category = categoryInput.value.trim();
+  const newQuoteText = document.getElementById("newQuoteText").value.trim();
+  const newQuoteCategory = document.getElementById("newQuoteCategory").value.trim();
 
-  if (text === "" || category === "") {
+  if (newQuoteText === "" || newQuoteCategory === "") {
     alert("Please fill in both fields!");
     return;
   }
 
-  // Add the new quote to the array
-  quotes.push({ text: text, category: category });
+  // Add new quote to the array
+  quotes.push({ text: newQuoteText, category: newQuoteCategory });
 
   // Clear input fields
-  textInput.value = "";
-  categoryInput.value = "";
+  document.getElementById("newQuoteText").value = "";
+  document.getElementById("newQuoteCategory").value = "";
 
-  // Update the displayed quote
+  // Show the newly added quote
   displayRandomQuote();
 }
 
-// ✅ Event listener for “Show New Quote” button
+// Event listener for "Show New Quote"
 newQuoteBtn.addEventListener("click", displayRandomQuote);
 
-// ✅ Display one random quote when the page loads
+// Display a quote on page load
 displayRandomQuote();
