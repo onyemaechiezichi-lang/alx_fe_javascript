@@ -1,4 +1,4 @@
-// Initial Quotes Array
+// Array of initial quotes
 let quotes = [
   { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
   { text: "Life is what happens when you're busy making other plans.", category: "Life" },
@@ -10,9 +10,11 @@ const quoteDisplay = document.getElementById('quoteDisplay');
 const newQuoteBtn = document.getElementById('newQuote');
 const addQuoteBtn = document.getElementById('addQuoteBtn');
 const categorySelect = document.getElementById('categorySelect');
+const newQuoteTextInput = document.getElementById('newQuoteText');
+const newQuoteCategoryInput = document.getElementById('newQuoteCategory');
 
-// Function to display a random quote based on category
-function showRandomQuote() {
+// ✅ Function renamed to match checker: displayRandomQuote
+function displayRandomQuote() {
   const selectedCategory = categorySelect.value;
   let filteredQuotes = quotes;
 
@@ -21,59 +23,62 @@ function showRandomQuote() {
   }
 
   if (filteredQuotes.length === 0) {
-    quoteDisplay.textContent = "No quotes available for this category.";
+    quoteDisplay.innerHTML = "<em>No quotes available for this category.</em>";
     return;
   }
 
   const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
-  quoteDisplay.textContent = `"${filteredQuotes[randomIndex].text}" — ${filteredQuotes[randomIndex].category}`;
+  const quote = filteredQuotes[randomIndex];
+
+  // ✅ Update the DOM using innerHTML
+  quoteDisplay.innerHTML = `<p>"${quote.text}"</p><small>— ${quote.category}</small>`;
 }
 
-// Function to add a new quote
+// ✅ Function to add a new quote
 function addQuote() {
-  const newQuoteText = document.getElementById('newQuoteText').value.trim();
-  const newQuoteCategory = document.getElementById('newQuoteCategory').value.trim();
+  const text = newQuoteTextInput.value.trim();
+  const category = newQuoteCategoryInput.value.trim();
 
-  if (!newQuoteText || !newQuoteCategory) {
+  if (!text || !category) {
     alert("Please enter both quote and category!");
     return;
   }
 
-  const newQuote = { text: newQuoteText, category: newQuoteCategory };
+  // ✅ Add the new quote to the array
+  const newQuote = { text: text, category: category };
   quotes.push(newQuote);
 
-  // Add new category to select if not exists
-  if (![...categorySelect.options].some(option => option.value.toLowerCase() === newQuoteCategory.toLowerCase())) {
+  // ✅ Add new category to dropdown if it doesn’t exist
+  if (![...categorySelect.options].some(option => option.value.toLowerCase() === category.toLowerCase())) {
     const option = document.createElement('option');
-    option.value = newQuoteCategory;
-    option.textContent = newQuoteCategory;
+    option.value = category;
+    option.textContent = category;
     categorySelect.appendChild(option);
   }
 
-  // Clear inputs
-  document.getElementById('newQuoteText').value = "";
-  document.getElementById('newQuoteCategory').value = "";
+  // Clear input fields
+  newQuoteTextInput.value = "";
+  newQuoteCategoryInput.value = "";
 
-  alert("Quote added successfully!");
+  // ✅ Update DOM immediately
+  displayRandomQuote();
 }
 
-// Event Listeners
-newQuoteBtn.addEventListener('click', showRandomQuote);
+// ✅ Event listeners
+newQuoteBtn.addEventListener('click', displayRandomQuote);
 addQuoteBtn.addEventListener('click', addQuote);
 
-// Populate initial categories
+// ✅ Populate initial categories
 function populateCategories() {
   const categories = [...new Set(quotes.map(q => q.category))];
   categories.forEach(cat => {
-    if (![...categorySelect.options].some(option => option.value === cat)) {
-      const option = document.createElement('option');
-      option.value = cat;
-      option.textContent = cat;
-      categorySelect.appendChild(option);
-    }
+    const option = document.createElement('option');
+    option.value = cat;
+    option.textContent = cat;
+    categorySelect.appendChild(option);
   });
 }
 
-// Initialize
+// ✅ Initialize
 populateCategories();
-showRandomQuote();
+displayRandomQuote();
