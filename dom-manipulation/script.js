@@ -1,84 +1,46 @@
-// Array of initial quotes
-let quotes = [
-  { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
+// Quotes array with text and category
+const quotes = [
+  { text: "The best way to predict the future is to invent it.", category: "Inspiration" },
   { text: "Life is what happens when you're busy making other plans.", category: "Life" },
-  { text: "Do not take life too seriously. You will never get out of it alive.", category: "Humor" }
+  { text: "Do not watch the clock; do what it does. Keep going.", category: "Motivation" },
 ];
 
-// DOM Elements
-const quoteDisplay = document.getElementById('quoteDisplay');
-const newQuoteBtn = document.getElementById('newQuote');
-const addQuoteBtn = document.getElementById('addQuoteBtn');
-const categorySelect = document.getElementById('categorySelect');
-const newQuoteTextInput = document.getElementById('newQuoteText');
-const newQuoteCategoryInput = document.getElementById('newQuoteCategory');
+// Get DOM elements
+const quoteDisplay = document.getElementById("quoteDisplay");
+const newQuoteBtn = document.getElementById("newQuote");
 
-// ✅ Function renamed to match checker: displayRandomQuote
+// Function to display a random quote
 function displayRandomQuote() {
-  const selectedCategory = categorySelect.value;
-  let filteredQuotes = quotes;
-
-  if (selectedCategory !== "all") {
-    filteredQuotes = quotes.filter(q => q.category.toLowerCase() === selectedCategory.toLowerCase());
-  }
-
-  if (filteredQuotes.length === 0) {
-    quoteDisplay.innerHTML = "<em>No quotes available for this category.</em>";
-    return;
-  }
-
-  const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
-  const quote = filteredQuotes[randomIndex];
-
-  // ✅ Update the DOM using innerHTML
-  quoteDisplay.innerHTML = `<p>"${quote.text}"</p><small>— ${quote.category}</small>`;
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  const randomQuote = quotes[randomIndex];
+  quoteDisplay.innerHTML = `<p>"${randomQuote.text}"</p><small>— ${randomQuote.category}</small>`;
 }
 
-// ✅ Function to add a new quote
+// Function to add a new quote
 function addQuote() {
-  const text = newQuoteTextInput.value.trim();
-  const category = newQuoteCategoryInput.value.trim();
+  const textInput = document.getElementById("newQuoteText");
+  const categoryInput = document.getElementById("newQuoteCategory");
+  const text = textInput.value.trim();
+  const category = categoryInput.value.trim();
 
-  if (!text || !category) {
-    alert("Please enter both quote and category!");
+  if (text === "" || category === "") {
+    alert("Please fill in both fields!");
     return;
   }
 
-  // ✅ Add the new quote to the array
-  const newQuote = { text: text, category: category };
-  quotes.push(newQuote);
-
-  // ✅ Add new category to dropdown if it doesn’t exist
-  if (![...categorySelect.options].some(option => option.value.toLowerCase() === category.toLowerCase())) {
-    const option = document.createElement('option');
-    option.value = category;
-    option.textContent = category;
-    categorySelect.appendChild(option);
-  }
+  // Add new quote to the array
+  quotes.push({ text: text, category: category });
 
   // Clear input fields
-  newQuoteTextInput.value = "";
-  newQuoteCategoryInput.value = "";
+  textInput.value = "";
+  categoryInput.value = "";
 
-  // ✅ Update DOM immediately
+  // Show a random quote (possibly the new one)
   displayRandomQuote();
 }
 
-// ✅ Event listeners
-newQuoteBtn.addEventListener('click', displayRandomQuote);
-addQuoteBtn.addEventListener('click', addQuote);
+// Event listener for “Show New Quote” button
+newQuoteBtn.addEventListener("click", displayRandomQuote);
 
-// ✅ Populate initial categories
-function populateCategories() {
-  const categories = [...new Set(quotes.map(q => q.category))];
-  categories.forEach(cat => {
-    const option = document.createElement('option');
-    option.value = cat;
-    option.textContent = cat;
-    categorySelect.appendChild(option);
-  });
-}
-
-// ✅ Initialize
-populateCategories();
+// Display one quote when the page loads
 displayRandomQuote();
