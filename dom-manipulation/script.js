@@ -257,3 +257,12 @@ function manualSync() {
   fetchQuotesFromServer();
   postQuotesToServer();
 }
+// === Task 4: ALX Check Compatibility ===
+
+// Wrapper function to handle both fetch and post sync operations
+async function syncQuotes() {
+  console.log("Syncing quotes with server...");
+  await fetchQuotesFromServer();
+  await postQuotesToServer();
+  console.log("Quotes synced successfully.");
+}
