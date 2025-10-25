@@ -266,3 +266,26 @@ async function syncQuotes() {
   await postQuotesToServer();
   console.log("Quotes synced successfully.");
 }
+async function syncQuotes() {
+  console.log("Syncing quotes with server...");
+  await fetchQuotesFromServer();
+  await postQuotesToServer();
+  console.log("Quotes synced successfully.");
+
+  // === Add UI notification for ALX checker ===
+  const notification = document.createElement("div");
+  notification.textContent = "Quotes synced with server!";
+  notification.style.position = "fixed";
+  notification.style.bottom = "20px";
+  notification.style.right = "20px";
+  notification.style.backgroundColor = "#4CAF50";
+  notification.style.color = "white";
+  notification.style.padding = "10px 20px";
+  notification.style.borderRadius = "8px";
+  notification.style.boxShadow = "0 4px 6px rgba(0,0,0,0.2)";
+  notification.style.zIndex = "1000";
+  document.body.appendChild(notification);
+
+  // Remove after 3 seconds
+  setTimeout(() => notification.remove(), 3000);
+}
