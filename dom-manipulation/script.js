@@ -141,3 +141,26 @@ if (sessionStorage.getItem("lastViewedQuote")) {
 } else {
   showRandomQuote();
 }
+// === Task 3: Dynamic Content Filtering System ===
+
+// Populate categories dropdown based on unique categories in quotes array
+function populateCategories() {
+  const categoryFilter = document.getElementById("categoryFilter");
+  const categories = ["all", ...new Set(quotes.map(q => q.category))];
+
+  categoryFilter.innerHTML = ""; // Clear existing options
+
+  categories.forEach(cat => {
+    const option = document.createElement("option");
+    option.value = cat;
+    option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+    categoryFilter.appendChild(option);
+  });
+
+  // Restore last selected filter if exists
+  const savedFilter = localStorage.getItem("selectedCategory");
+  if (savedFilter) {
+    categoryFilter.value = savedFilter;
+    filterQuotes();
+  }
+}
