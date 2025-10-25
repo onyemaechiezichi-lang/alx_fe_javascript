@@ -164,3 +164,96 @@ function populateCategories() {
     filterQuotes();
   }
 }
+// === Task 4: Syncing Data with Server and Implementing Conflict Resolution ===
+
+// Simulated server endpoint using JSONPlaceholder (mock API)
+const SERVER_URL = "https://jsonplaceholder.typicode.com/posts"; // mock endpoint
+
+// Function to simulate fetching quotes from the "server"
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch(SERVER_URL);
+    const data = await response.json();
+
+    // Simulate server data structure (using first few items)
+    const serverQuotes = data.slice(0, 5).map(item => ({
+      text: item.title,
+      category: "server"
+    }));
+
+    handleServerSync(serverQuotes);
+  } catch (error) {
+    console.error("Error fetching server quotes:", error);
+  }
+}
+
+// Function to simulate sending local quotes to the "server"
+async function postQuotesToServer() {
+  try {
+    await fetch(SERVER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(quotes)
+    });
+    console.log("Local quotes synced to server.");
+  } catch (error) {
+    console.error("Error syncing quotes to server:", error);
+  }
+}
+
+// Handle synchronization and conflict resolution
+function handleServerSync(serverQuotes) {
+  const localQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
+
+  let conflictDetected = false;
+
+  // Simple conflict resolution: server data overrides duplicates
+  serverQuotes.forEach(serverQuote => {
+    const exists = localQuotes.some(
+      q => q.text === serverQuote.text && q.category === serverQuote.category
+    );
+    if (!exists) {
+      localQuotes.push(serverQuote);
+      conflictDetected = true;
+    }
+  });
+
+  // Save merged quotes to localStorage
+  localStorage.setItem("quotes", JSON.stringify(localQuotes));
+
+  // Update global quotes array
+  quotes.length = 0;
+  quotes.push(...localQuotes);
+
+  if (conflictDetected) {
+    showConflictNotification();
+    populateCategories(); // refresh dropdown
+  }
+}
+
+// Notification UI for sync conflicts
+function showConflictNotification() {
+  let notification = document.getElementById("syncNotification");
+  if (!notification) {
+    notification = document.createElement("div");
+    notification.id = "syncNotification";
+    notification.textContent = "Quotes updated from server (conflicts resolved)";
+    notification.style.backgroundColor = "#fffae6";
+    notification.style.border = "1px solid #f0c36d";
+    notification.style.padding = "10px";
+    notification.style.margin = "10px 0";
+    notification.style.textAlign = "center";
+    document.body.insertBefore(notification, document.body.firstChild);
+
+    setTimeout(() => notification.remove(), 5000); // auto-dismiss
+  }
+}
+
+// Periodic sync with the server every 30 seconds
+setInterval(fetchQuotesFromServer, 30000);
+
+// Manual sync button (optional, can be added to HTML)
+function manualSync() {
+  fetchQuotesFromServer();
+  postQuotesToServer();
+}
